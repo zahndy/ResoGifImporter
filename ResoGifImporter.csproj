@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+	<Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\Steam\SteamApps\common\Resonite\rml_libs\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Elements.Assets">
+      <HintPath>..\..\..\..\..\Steam\SteamApps\common\Resonite\Elements.Assets.dll</HintPath>
+    </Reference>
+    <Reference Include="Elements.Core">
+      <HintPath>..\..\..\..\..\Steam\SteamApps\common\Resonite\Elements.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FrooxEngine">
+      <HintPath>..\..\..\..\..\Steam\SteamApps\common\Resonite\FrooxEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="FrooxEngine.Store">
+      <HintPath>..\..\..\..\..\Steam\SteamApps\common\Resonite\FrooxEngine.Store.dll</HintPath>
+    </Reference>
+    <Reference Include="Renderite.Shared">
+      <HintPath>..\..\..\..\..\Steam\SteamApps\common\Resonite\Renderite.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="ResoniteModLoader">
+      <HintPath>..\..\..\..\..\Steam\SteamApps\common\Resonite\Libraries\ResoniteModLoader.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Copy ImageSharp dependencies to output folder -->
+  <Target Name="CopyImageSharpDependencies" AfterTargets="Build">
+    <PropertyGroup>
+      <NuGetPackagesPath>$([System.IO.Path]::Combine($(NuGetPackageRoot), 'sixlabors.imagesharp', '3.1.12', 'lib'))</NuGetPackagesPath>
+    </PropertyGroup>
+    
+    <Message Text="Checking NuGet path: $(NuGetPackagesPath)" Importance="high" />
+    
+    <ItemGroup>
+      <AvailableDlls Include="$(NuGetPackagesPath)\*\SixLabors.ImageSharp.dll" />
+    </ItemGroup>
+    
+    <Message Text="Found DLLs: @(AvailableDlls)" Importance="high" />
+    
+    <Copy SourceFiles="@(AvailableDlls)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
+  </Target>
+
+</Project>
